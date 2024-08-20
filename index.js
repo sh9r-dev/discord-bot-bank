@@ -5,6 +5,7 @@ const fs = require('fs');
 const config = require('./config.js');
 const cooldownUtil = require('./src/utils/cooldown.js');
 const companies = require('./src/commands/companiesData');
+const jobCommand = require('./src/commands/job.js');
 
 const client = new Client({
     intents: [
@@ -42,6 +43,8 @@ client.once('ready', async () => {
 });
 
 client.commands = new Map();
+client.commands.set(jobCommand.name, jobCommand); // Move this line after client initialization
+
 const commandFiles = fs.readdirSync(path.join(__dirname, 'src', 'commands')).filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
@@ -53,7 +56,7 @@ for (const file of commandFiles) {
     }
 }
 
-// load commands
+// Load commands
 client.on('messageCreate', async message => {
     if (message.author.bot) return;
 
